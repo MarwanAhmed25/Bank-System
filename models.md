@@ -11,10 +11,10 @@ Users:
 account:
     user_slug: forign key
     accepted: boolean, defualt false
-    balance: int defualt 0, optional, not -
+    balance: int defualt 0, not -
     account_number: int, uniqe, not null
 
-transafere operations:
+transfare_operations:
     account_number: int forign key(account_number), not null
     from_or_to: varchar [from, to]
     to_who: int forign key(account_number), not null
@@ -22,6 +22,7 @@ transafere operations:
     balance_before: int
     balcance_after: int
 
+-----------------------------------------------
 
 Pages:
     login (users, admins)
