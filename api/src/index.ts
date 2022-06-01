@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import create from './database';
+import db from './database';
 import bodyParser from 'body-parser';
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 
 //configre the server to listen to port and running it
 app.listen(PORT, (): void => {
-    create();
+    db.create();
     console.log(`server running on port ${PORT}...`);
 });
 
