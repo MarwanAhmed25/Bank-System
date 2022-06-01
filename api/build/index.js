@@ -20,7 +20,7 @@ app.use(body_parser_1.default.urlencoded({
 }));
 //configre the server to listen to port and running it
 app.listen(PORT, () => {
-    (0, database_1.default)();
+    database_1.default.create();
     console.log(`server running on port ${PORT}...`);
 });
 //export the app to use when importing the file

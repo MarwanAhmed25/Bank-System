@@ -27,5 +27,13 @@ const create = async()=>{
     await sequelize.sync({force:false});
     console.log('created tables...');
 
-} 
-export default create;
+}
+
+const db = {
+  create,
+  User,
+  Account,
+  Operation
+}
+
+export default db;
