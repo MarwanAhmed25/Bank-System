@@ -1,9 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import path from 'path';
-import bodyParser from 'body-parser';
 import create from './database';
+import bodyParser from 'body-parser';
 dotenv.config();
 
 
@@ -17,20 +16,13 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.set('view engine', 'ejs');
-app.set('views', 'front');
-const p = path.join(__dirname, 'static/../../static');
-app.use(express.static(p));
+
 //configre the server to listen to port and running it
 app.listen(PORT, (): void => {
     create();
     console.log(`server running on port ${PORT}...`);
 });
 
-app.get('/',async (req,res)=>{
-  
-    res.render('index');
-});
 
  
 //export the app to use when importing the file

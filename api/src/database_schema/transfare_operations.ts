@@ -1,8 +1,7 @@
 import { DataTypes } from "sequelize";
-import Account from '../database';
 
 const operations = {
-    to_who: {
+    my_account_number: {
         type: DataTypes.STRING,
         allowNull: false,
         validate:{
@@ -10,7 +9,7 @@ const operations = {
         }
       
     },
-    account_number: {
+    user_account_number: {
         type: DataTypes.STRING,
         allowNull: false,
         validate:{

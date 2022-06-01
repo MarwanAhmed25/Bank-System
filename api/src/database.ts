@@ -10,6 +10,11 @@ const User = sequelize.define('user', user);
 const Account = sequelize.define('account', account);
 const Operation = sequelize.define('operation', operation);
 
+User.hasOne(Account);
+Account.belongsTo(User);
+
+Account.hasMany(Operation);
+Operation.belongsTo(Account);
 
 const create = async()=>{
     try {
@@ -19,8 +24,8 @@ const create = async()=>{
         console.error('Unable to connect to the database:', error);
       }
     
-    await sequelize.sync({force:true});
+    await sequelize.sync({force:false});
     console.log('created tables...');
 
-}
-export default { create, User, Account, Operation };
+} 
+export default create;

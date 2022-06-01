@@ -8,7 +8,7 @@ const account = {
         allowNull: false,
         validate: {
             unique: true
-        }
+        },
     },
     accepted: {
         type: sequelize_1.DataTypes.BOOLEAN,

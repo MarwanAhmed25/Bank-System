@@ -11,6 +11,10 @@ const sequelize = new sequelize_1.Sequelize('postgres://marwan:marwan@localhost:
 const User = sequelize.define('user', user_1.default);
 const Account = sequelize.define('account', account_1.default);
 const Operation = sequelize.define('operation', transfare_operations_1.default);
+User.hasOne(Account);
+Account.belongsTo(User);
+Account.hasMany(Operation);
+Operation.belongsTo(Account);
 const create = async () => {
     try {
         await sequelize.authenticate();
@@ -19,7 +23,7 @@ const create = async () => {
     catch (error) {
         console.error('Unable to connect to the database:', error);
     }
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log('created tables...');
 };
 exports.default = create;
