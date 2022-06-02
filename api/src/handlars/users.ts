@@ -3,6 +3,7 @@ import { User, user } from "../models/users";
 import parseJwt from "../services/jwt_parse";
 import pagination from "../services/pagination";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
 import config from '../config/config';
 
 const user_obj = new User();
@@ -66,6 +67,8 @@ async function create(req: Request, res: Response) {
         if (!(u.name as unknown as string))
             u.name = u.slug;
 
+        
+         
         const result = await user_obj.create(u);
         const token = jwt.sign({ user: result }, secret);
         res.status(200).json({ user: result, token: token });//result, token
