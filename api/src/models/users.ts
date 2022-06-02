@@ -2,7 +2,7 @@ import db from '../database';
 //get the user model
 const user_model = db.User;
 
-type user = {
+export type user = {
     id?: number,
     email: string,
     accepted: boolean,
@@ -14,7 +14,7 @@ type user = {
     slug?: string
 }
 //class of CRUD operation in user model
-class User {
+export class User {
     //show all rows in the user table
     async index() {
         try {
@@ -35,8 +35,7 @@ class User {
     async create(u: user) {
         try {
             u.slug = u.email.split('@')[0];
-            const result = await user_model.create(u);
-            return 'created';
+            return await user_model.create(u);
         } catch (e) {
             throw new Error(`${e}`);
         }
@@ -60,3 +59,4 @@ class User {
         }
     }
 };
+
