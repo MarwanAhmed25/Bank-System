@@ -2,8 +2,6 @@ import db from '../database';
 import bcrypt from 'bcrypt';
 import config from '../config/config';
 
-const secret = config.secret as unknown as string;
-
 //get the user model
 const user_model = db.User;
 

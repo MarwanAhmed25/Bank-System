@@ -3,7 +3,6 @@ import { User, user } from "../models/users";
 import parseJwt from "../services/jwt_parse";
 import pagination from "../services/pagination";
 import jwt from "jsonwebtoken";
-import bcrypt from 'bcrypt';
 import config from '../config/config';
 
 const user_obj = new User();

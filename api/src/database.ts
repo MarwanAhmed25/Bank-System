@@ -2,8 +2,9 @@ import { Sequelize } from 'sequelize';
 import user from './database_schema/user';
 import account from './database_schema/account';
 import operation from './database_schema/transfare_operations';
+import config from './config/config';
 
-const sequelize = new Sequelize('postgres://marwan:marwan@localhost:5432/store') // Example for postgres
+const sequelize = new Sequelize(config.DB_URL as unknown as string) // Example for postgres
 
 
 const User = sequelize.define('user', user);
