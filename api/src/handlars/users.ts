@@ -4,6 +4,7 @@ import parseJwt from "../services/jwt_parse";
 import pagination from "../services/pagination";
 import jwt from "jsonwebtoken";
 import config from '../config/config';
+import jwtDecode from "jwt-decode";
 
 const user_obj = new User();
 const secret = config.secret as unknown as string;
@@ -16,9 +17,10 @@ async function index(req: Request, res: Response) {
     const limit = Number(req.query.limit) || 20;
     try {
         //convert token to user object
-        const user_role = parseJwt(token).role;
-
-        if (user_role === 'admin') {
+        const x = jwtDecode(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        
+        if (user.role === 'admin') {
             const result = await user_obj.index();
             //if page exist will paginate
             const paginated_result = pagination(page, limit, result);
@@ -37,8 +39,10 @@ async function show(req: Request, res: Response) {
     const slug = req.params.slug;
     try {
         //convert token to user object
-        const user_slug = parseJwt(token).slug;
-        if (user_slug === slug) {
+        const x = jwtDecode(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        
+        if ((user.slug === slug) || (user.role === 'admin')) {
             const result = await user_obj.show(slug);
             return res.status(200).json(result);//result
         }
@@ -65,8 +69,6 @@ async function create(req: Request, res: Response) {
         //if name not exist the defualt is slug
         if (!(u.name as unknown as string))
             u.name = u.slug;
-
-        
          
         const result = await user_obj.create(u);
         const token = jwt.sign({ user: result }, secret);
@@ -96,8 +98,12 @@ async function update(req: Request, res: Response) {
         if (!u.phone) {
             u.phone = exist_user?.getDataValue('phone');
         }
-        const user_slug = parseJwt(token).slug;
-        if (user_slug === slug) {
+        
+        //convert token to user object
+        const x = jwtDecode(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        
+        if (user.slug === slug) {
             const result = await user_obj.update(u.email, u.name, u.slug as unknown as string, u.phone, exist_user?.getDataValue('slug'));
         const token = jwt.sign({ user: result }, secret);
 
@@ -161,10 +167,12 @@ async function approve_user(req:Request, res:Response) {
         if (!accepted) {
             accepted = exist_user?.getDataValue('accepted');
         }
+        
         //convert token to user object
-        const user_role = parseJwt(token).role;
-
-        if (user_role === 'admin') {
+        const x = jwtDecode(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        
+        if (user.role === 'admin') {
             const result = await user_obj.update_from_admin(accepted, status, slug);
             return res.status(200).json({ user: result });// result
         }

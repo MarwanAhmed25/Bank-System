@@ -9,6 +9,7 @@ export default function parseJwt(token: string) {
 
         return JSON.parse(jsonPayload).user;
     } catch (e) {
+        //throw new Error('login first.');
         throw new Error(`${e}`);
     }
 }
