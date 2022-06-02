@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = void 0;
 const database_1 = __importDefault(require("../database"));
 //get the user model
 const user_model = database_1.default.User;
@@ -30,8 +31,7 @@ class User {
     async create(u) {
         try {
             u.slug = u.email.split('@')[0];
-            const result = await user_model.create(u);
-            return 'created';
+            return await user_model.create(u);
         }
         catch (e) {
             throw new Error(`${e}`);
@@ -41,6 +41,7 @@ class User {
     async update(u) {
         try {
             const result = await user_model.update(u, { where: { slug: u.slug } });
+            console.log(result);
             return 'updated';
         }
         catch (e) {
@@ -51,11 +52,25 @@ class User {
     async delete(slug) {
         try {
             const result = await user_model.destroy({ where: { slug: slug } });
+            console.log(result);
             return 'deleted';
         }
         catch (e) {
             throw new Error(`${e}`);
         }
     }
+    //login
+    async login(email, password) {
+        const result = await user_model.findOne({ where: { email: email } });
+        try {
+            const exist_password = result === null || result === void 0 ? void 0 : result.getDataValue('password');
+            if (result && (exist_password === password))
+                return result;
+        }
+        catch (e) {
+            throw new Error('Email or password wrong.');
+        }
+    }
 }
+exports.User = User;
 ;

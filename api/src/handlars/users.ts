@@ -33,6 +33,7 @@ async function show(req: Request, res: Response) {
 //create and return a json data for the user in database
 async function create(req: Request, res: Response) {
     const u: user = req.body;
+    
      try {
          const result = await user_obj.create(u);
                  
@@ -69,6 +70,20 @@ async function delete_(req: Request, res: Response) {
      }
      
  }
+ //return token for user and login the user using email and password from request body
+async function login(req: Request, res: Response) {
+    const { email, password } = req.body;//required
+    
+    try {
+
+        //search in database by input data
+        const resault = await user_obj.login(email,password);
+        res.status(200).json({user:resault,token:''});
+            
+    } catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
 //main routes of user model
 function mainRoutes(app: Application) {
     
@@ -78,6 +93,7 @@ function mainRoutes(app: Application) {
     app.patch('/users/:slug', update);
     app.delete('/users/:slug', delete_);
 
+    app.post('/login',login);
     
 }
 

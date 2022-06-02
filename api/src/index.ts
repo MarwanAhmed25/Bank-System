@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import db from './database';
+import user_route from './handlars/users';
 import bodyParser from 'body-parser';
 dotenv.config();
 
@@ -23,7 +24,7 @@ app.listen(PORT, (): void => {
     console.log(`server running on port ${PORT}...`);
 });
 
-
+user_route(app);
  
 //export the app to use when importing the file
 export default app;

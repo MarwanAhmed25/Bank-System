@@ -44,6 +44,8 @@ export class User {
     async update(u: user) {
         try {
             const result = await user_model.update(u, { where: { slug: u.slug } });
+            console.log(result);
+
             return 'updated';
         } catch (e) {
             throw new Error(`${e}`);
@@ -53,9 +55,22 @@ export class User {
     async delete(slug: string) {
         try {
             const result = await user_model.destroy({ where: { slug: slug } });
+            console.log(result);
+            
             return 'deleted';
         } catch (e) {
             throw new Error(`${e}`);
+        }
+    }
+    //login
+    async login(email:string, password:string) {
+        const result = await user_model.findOne({where: {email: email}});
+        try{
+            const exist_password = result?.getDataValue('password');
+            if(result && (exist_password === password))
+                return result;
+        }catch(e){
+            throw new Error('Email or password wrong.');
         }
     }
 };
