@@ -4,9 +4,9 @@ const users = {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true,
         validate:{
             isEmail: true,
-            unique:true,
         }
     },
     accepted: {
@@ -15,10 +15,9 @@ const users = {
     },
     password: {
         type: DataTypes.STRING,
+        allowNull:false,
         validate:{
             min:8,
-            isNull: false,
-            
         }
         
     },
@@ -28,27 +27,26 @@ const users = {
     phone: {
         type: DataTypes.STRING,
         validate:{
-            isNumeric: true
+            isNumeric: true,
         }
     },
     status: {
         type: DataTypes.STRING,
         validate:{
-            isIn:[['active', 'deactive', 'suspended']]
+            isIn:[['active', 'deactive', 'suspended']],
         }
     },
     role: {
         type: DataTypes.STRING,
         validate:{
-            isIn: [['user', 'admin']]
+            isIn: [['user', 'admin']],
         }
     },
     slug: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate:{
-            unique: true
-        }
+        unique: true,
+        
     }
 }
 

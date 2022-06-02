@@ -48,10 +48,10 @@ export class User {
     //update exist row in the user table
     async update(email: string, name: string, slug:string, phone:string, old_slug:string) {
         try {
-            const result = await user_model.update({email, name, slug, phone}, { where: { slug: old_slug } });
+            const result = await user_model.update({email, name, slug, phone}, { where: { slug: old_slug } ,returning: true});
             console.log(result);
 
-            return 'updated';
+            return result;
         } catch (e) {
             throw new Error(`${e}`);
         }
@@ -83,7 +83,7 @@ export class User {
     //update exist row in the user table
     async update_from_admin(accepted: boolean, status: string, slug:string) {
         try {
-            const result = await user_model.update({accepted, status}, { where: { slug: slug } });
+            const result = await user_model.update({accepted, status}, { where: { slug: slug }, returning: true });
             console.log(result);
 
             return 'updated';
