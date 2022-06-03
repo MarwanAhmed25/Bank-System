@@ -91,5 +91,16 @@ export class User {
             throw new Error(`${e}`);
         }
     }
+    //add new row in the user table
+    async reset_password(password: string, slug: string) {
+        try {      
+               //hashin password using round and extra from .env file and password from request.body
+        const hash = bcrypt.hashSync(password + config.extra_password, parseInt(config.password_round as string));
+        password = hash;      
+            return await user_model.update({password},{where:{slug:slug}, returning:true});
+        } catch (e) {
+            throw new Error(`${e}`);
+        }
+    }
 };
 
