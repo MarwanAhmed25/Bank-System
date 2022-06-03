@@ -6,7 +6,6 @@ import config from '../config/config';
 const user_model = db.User;
 
 export type user = {
-    id?: number,
     email: string,
     accepted: boolean,
     password: string,
