@@ -5,6 +5,7 @@ import pagination from "../services/pagination";
 import jwt from "jsonwebtoken";
 import config from '../config/config';
 import jwtDecode from "jwt-decode";
+import sending_mail from "../services/send_mail";
 
 const user_obj = new User();
 const secret = config.secret as unknown as string;
@@ -181,6 +182,43 @@ async function approve_user(req:Request, res:Response) {
         res.status(400).json(`${e}`);
     }
 }
+//forget password
+async function forget_password(req:Request, res:Response) {
+    const email = req.body.email as unknown as string;
+    try {
+        const slug = email.split('@')[0];
+        const result = await user_obj.show(slug);
+        const status = result?.getDataValue('status');
+        if(status === 'suspended')
+            return res.status(400).json('user suspended.');
+
+        const token = jwt.sign({ user: result }, secret);
+        const url = '' + token;
+        //sending mail to email with url
+        const sent = sending_mail(email, 'Reset password', url);
+        return res.status(200).json('Ckeck your mail.');
+    } catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
+//reset password
+async function reset_password(req:Request, res:Response) {
+    const token = req.headers.token as unknown as string;
+    const password = req.body.password as unknown as string;
+    try {
+        //convert token to user object
+        const x = jwtDecode(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        
+        const result = await user_obj.reset_password(password, user.slug);
+
+        const new_token = jwt.sign({ user: result }, secret);
+        
+        return res.status(200).json({user: result, token: new_token});
+    } catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
 //main routes of user model
 function mainRoutes(app: Application) {
 
@@ -191,6 +229,8 @@ function mainRoutes(app: Application) {
     app.delete('/users/:slug', delete_);
 
     app.post('/login', login);
+    app.post('/forget_password', forget_password);
+    app.post('/reset_password', reset_password);
     app.post('/approve_user/:slug', approve_user);
 
 }

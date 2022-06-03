@@ -32,3 +32,11 @@
         aprove  --> /approve_user/:slug [post]
                                         [header] token -> admin
                                         [body] {status [optional], accepted[optional]}
+        
+        forget_password  --> /forget_password [post]
+                                        [header] no content
+                                        [body] {email}
+
+        reset_password  --> /reset_password [post]
+                                        [header] token -> user
+                                        [body] {password}
