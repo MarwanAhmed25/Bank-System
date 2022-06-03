@@ -9,6 +9,7 @@ const pagination_1 = __importDefault(require("../services/pagination"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config/config"));
 const jwt_decode_1 = __importDefault(require("jwt-decode"));
+const send_mail_1 = __importDefault(require("../services/send_mail"));
 const user_obj = new users_1.User();
 const secret = config_1.default.secret;
 //return a json data for all users in database
@@ -165,6 +166,41 @@ async function approve_user(req, res) {
         res.status(400).json(`${e}`);
     }
 }
+//forget password
+async function forget_password(req, res) {
+    const email = req.body.email;
+    try {
+        const slug = email.split('@')[0];
+        const result = await user_obj.show(slug);
+        const status = result === null || result === void 0 ? void 0 : result.getDataValue('status');
+        if (status === 'suspended')
+            return res.status(400).json('user suspended.');
+        const token = jsonwebtoken_1.default.sign({ user: result }, secret);
+        const url = '' + token;
+        //sending mail to email with url
+        const sent = (0, send_mail_1.default)(email, 'Reset password', url);
+        return res.status(200).json('Ckeck your mail.');
+    }
+    catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
+//reset password
+async function reset_password(req, res) {
+    const token = req.headers.token;
+    const password = req.body.password;
+    try {
+        //convert token to user object
+        const x = (0, jwt_decode_1.default)(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        const result = await user_obj.reset_password(password, user.slug);
+        const new_token = jsonwebtoken_1.default.sign({ user: result }, secret);
+        return res.status(200).json({ user: result, token: new_token });
+    }
+    catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
 //main routes of user model
 function mainRoutes(app) {
     app.get('/users', index);
@@ -173,6 +209,8 @@ function mainRoutes(app) {
     app.patch('/users/:slug', update);
     app.delete('/users/:slug', delete_);
     app.post('/login', login);
+    app.post('/forget_password', forget_password);
+    app.post('/reset_password', reset_password);
     app.post('/approve_user/:slug', approve_user);
 }
 exports.default = mainRoutes;

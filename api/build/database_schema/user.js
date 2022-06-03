@@ -44,8 +44,7 @@ const users = {
     },
     slug: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        primaryKey: true,
     }
 };
 exports.default = users;
