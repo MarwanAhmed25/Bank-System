@@ -20,7 +20,6 @@ const account = {
         primaryKey: true,
         allowNull: false,
         validate: {
-            unique: true,
             isNumeric: true,
         }
     }

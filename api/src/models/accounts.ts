@@ -6,61 +6,65 @@ import config from '../config/config';
 const account_model = db.Account;
 
 export type account = {
-    email: string,
+    balance: string,
     accepted: boolean,
-    password: string,
-    name: string,
-    phone: string,
-    status: string,
-    role: string,
-    slug?: string
+    account_number: string,
+    userSlug:string
 }
 //class of CRUD operation in account model
 export class Account {
     //show all rows in the account table
     async index() {
         try {
-            return await account_model.findAll({where: {role:'account'}});
+            return await account_model.findAll();
         } catch (e) {
             throw new Error(`${e}`);
         }
     }
     //show one row in the account table
-    async show(slug: string) {
+    async show(userSlug: string) {
         try {
-            return await account_model.findOne({ where: { slug: slug } });
+            return await account_model.findOne({ where: { userSlug: userSlug } });
         } catch (e) {
             throw new Error(`${e}`);
         }
     }
     //add new row in the account table
-    async create(u: account) {
-        try {      
-               //hashin password using round and extra from .env file and password from request.body
-        const hash = bcrypt.hashSync(u.password + config.extra_password, parseInt(config.password_round as string));
-        u.password = hash;      
-            return await account_model.create(u);
+    async create(userSlug:string, account_number:string) {
+        try {        
+            const exist = await this.show(userSlug);
+            if(exist)
+                return exist;
+            return await account_model.create({ balance:0, accepted: false, userSlug: userSlug, account_number: account_number});
         } catch (e) {
             throw new Error(`${e}`);
         }
     }
     //update exist row in the account table
-    async update(email: string, name: string, slug:string, phone:string, old_slug:string) {
+    async update(balance: number, userSlug:string) {
         try {
-            const result = await account_model.update({email, name, slug, phone}, { where: { slug: old_slug } ,returning: true});
-            console.log(result);
-
+            const result = await account_model.update({balance}, { where: { userSlug: userSlug } ,returning: true});
+            
+            return result;
+        } catch (e) {
+            throw new Error(`${e}`);
+        }
+    }
+    //update exist row in the account table
+    async approve(accepted: number, userSlug:string) {
+        try {
+            const result = await account_model.update({accepted}, { where: { userSlug: userSlug } ,returning: true});
+            
             return result;
         } catch (e) {
             throw new Error(`${e}`);
         }
     }
     //delete one row in the account table
-    async delete(slug: string) {
+    async delete(userSlug: string) {
         try {
-            const result = await account_model.destroy({ where: { slug: slug } });
-            console.log(result);
-            
+            const result = await account_model.destroy({ where: { userSlug: userSlug } });
+                        
             return 'deleted';
         } catch (e) {
             throw new Error(`${e}`);

@@ -1,11 +1,14 @@
 import db from '../database';
 import bcrypt from 'bcrypt';
+import { Account } from './accounts';
 import config from '../config/config';
+import get_random_number from '../services/random_int';
 
 //get the user model
 const user_model = db.User;
-
+const account_obj = new Account();
 export type user = {
+    id?:number,
     email: string,
     accepted: boolean,
     password: string,
@@ -58,9 +61,9 @@ export class User {
     //delete one row in the user table
     async delete(slug: string) {
         try {
+            await account_obj.delete(slug);
             const result = await user_model.destroy({ where: { slug: slug } });
-            console.log(result);
-            
+                        
             return 'deleted';
         } catch (e) {
             throw new Error(`${e}`);
@@ -83,8 +86,14 @@ export class User {
     async update_from_admin(accepted: boolean, status: string, slug:string) {
         try {
             const result = await user_model.update({accepted, status}, { where: { slug: slug }, returning: true });
-            console.log(result);
-
+            const obj = JSON.parse(JSON.stringify(result));
+            const id_ = obj[1][0].id;
+            
+            if(accepted && status === 'active')
+            {
+                const num = get_random_number(id_);
+                account_obj.create(slug,num);
+            }
             return 'updated';
         } catch (e) {
             throw new Error(`${e}`);

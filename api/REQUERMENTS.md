@@ -40,3 +40,20 @@
         reset_password  --> /reset_password [post]
                                         [header] token -> user
                                         [body] {password}
+
+    Account:
+        index-> [get] --> '/users/accounts'
+            headers --> token for admin, users
+            body --> nothing
+
+        show-> [get] --> '/users/:slug/account' 
+            headers --> token for admin, users
+            body --> nothing
+
+        update-> [post] --> '/users/:slug/account'
+            headers --> token for user
+            body --> balance-> number
+            
+        approve-> [post] --> '/users/:slug/approve_account'
+            headers --> token for admin
+            body --> accepted ->boolean
