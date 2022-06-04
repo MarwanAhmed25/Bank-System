@@ -60,7 +60,7 @@ export class Account {
     }
     
     //update exist row in the account table
-    async approve(accepted: number, userSlug:string) {
+    async approve(accepted: boolean, userSlug:string) {
         try {
             const result = await account_model.update({accepted}, { where: { userSlug: userSlug } ,returning: true});
             
