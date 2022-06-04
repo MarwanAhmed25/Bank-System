@@ -13,7 +13,7 @@
                                 [headers] token -> user or admin
                                 [body] no content        
 
-        create   --> /users/:slug [post] 
+        create   --> /users [post] 
                                 [headers] noo content
                                 [body] {email, password, name[optional], phone, role [user, admin]}
 
