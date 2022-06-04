@@ -152,8 +152,11 @@ async function approve_user(req, res) {
     const slug = req.params.slug;
     try {
         const exist_user = await user_obj.show(slug);
+        const exist_status = exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('status');
+        if (exist_status === 'suspended')
+            return res.status(400).json('user suspended.');
         if (!status) {
-            status = exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('status');
+            status = exist_status;
         }
         if (!accepted) {
             accepted = exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('accepted');

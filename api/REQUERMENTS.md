@@ -53,7 +53,21 @@
         update-> [post] --> '/users/:slug/account'
             headers --> token for user
             body --> balance-> number
-            
+
         approve-> [post] --> '/users/:slug/approve_account'
             headers --> token for admin
             body --> accepted ->boolean
+    
+    Logs:
+        index-> [get] --> '/all_logs'
+            headers --> token for admins
+            body --> nothing
+
+        show-> [get] --> '/logs' 
+            headers --> token for user
+            body --> nothing
+
+        create-> [post] --> '/users/:slug/account'
+            headers --> token for user
+            body --> amount-> number, reciver-> account_number, 
+            

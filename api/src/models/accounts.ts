@@ -29,6 +29,14 @@ export class Account {
             throw new Error(`${e}`);
         }
     }
+    //show one row in the account table
+    async show_by_account_number(userSlug: string) {
+        try {
+            return await account_model.findOne({ where: { userSlug: userSlug } });
+        } catch (e) {
+            throw new Error(`${e}`);
+        }
+    }
     //add new row in the account table
     async create(userSlug:string, account_number:string) {
         try {        
@@ -50,6 +58,7 @@ export class Account {
             throw new Error(`${e}`);
         }
     }
+    
     //update exist row in the account table
     async approve(accepted: number, userSlug:string) {
         try {

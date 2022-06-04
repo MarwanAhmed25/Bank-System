@@ -53,11 +53,7 @@ async function show(req: Request, res: Response) {
     }
 
 }
-/**
- * create token
- * 
- * 
- */
+
 //create and return a json data for the user in database
 async function create(req: Request, res: Response) {
     const u: user = req.body;
@@ -166,8 +162,12 @@ async function approve_user(req: Request, res: Response) {
     try {
 
         const exist_user = await user_obj.show(slug);
+        const exist_status = exist_user?.getDataValue('status');
+        if (exist_status === 'suspended')
+            return res.status(400).json('user suspended.');
+
         if (!status) {
-            status = exist_user?.getDataValue('status');
+            status = exist_status;
         }
         if (!accepted) {
             accepted = exist_user?.getDataValue('accepted');
