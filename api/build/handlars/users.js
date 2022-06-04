@@ -52,11 +52,6 @@ async function show(req, res) {
         res.status(400).json(`${e}`);
     }
 }
-/**
- * create token
- *
- *
- */
 //create and return a json data for the user in database
 async function create(req, res) {
     const u = req.body;

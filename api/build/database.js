@@ -24,7 +24,7 @@ const sequelize = new sequelize_1.Sequelize({
 });
 const User = sequelize.define('user', user_1.default, { createdAt: false, updatedAt: false });
 const Account = sequelize.define('account', account_1.default, { createdAt: false, updatedAt: false });
-const Operation = sequelize.define('operation', logs_1.default, { createdAt: false, updatedAt: false });
+const Logs = sequelize.define('logs', logs_1.default, { createdAt: false, updatedAt: false });
 User.hasOne(Account);
 Account.belongsTo(User);
 const create = async () => {
@@ -42,6 +42,6 @@ const db = {
     create,
     User,
     Account,
-    Operation
+    Logs
 };
 exports.default = db;
