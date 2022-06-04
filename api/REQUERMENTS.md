@@ -15,7 +15,7 @@
 
         create   --> /users/:slug [post] 
                                 [headers] noo content
-                                [body] {email, password, name[optional], phone}
+                                [body] {email, password, name[optional], phone, role [user, admin]}
 
         update   --> /users/:slug [patch] 
                                 [headers] token -> user
@@ -31,13 +31,13 @@
 
         aprove  --> /approve_user/:slug [post]
                                         [header] token -> admin
-                                        [body] {status [optional], accepted[optional]}
+                                        [body] {status [optional-> [active, deactive, suspended]], accepted[optional-> true or false]}
         
-        forget_password  --> /forget_password [post]
+        forget_password  --> /forget_password [post]            //pendding need front web page
                                         [header] no content
                                         [body] {email}
 
-        reset_password  --> /reset_password [post]
+        reset_password  --> /reset_password [post]              //pendding need front web page
                                         [header] token -> user
                                         [body] {password}
 
