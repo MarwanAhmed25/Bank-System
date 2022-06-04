@@ -24,7 +24,7 @@ async function index(req: Request, res: Response) {
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token,secret);
 
-        if (permisson && user[1][0].role === 'admin') {
+        if (permisson && user.role === 'admin') {
             let result = await log_obj.index();
             if(account_number){
                 result = result.filter(a => a.getDataValue('sender') === account_number || a.getDataValue('reciver') === account_number);
@@ -53,7 +53,7 @@ async function show(req: Request, res: Response) {
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
         if (permisson) {
-            const account = await account_obj.show(user[1][0].slug);
+            const account = await account_obj.show(user.slug);
             const account_number = account?.getDataValue('account_number');
             const result = await log_obj.show(account_number);
             const paginated_result = pagination(page, limit, result);
@@ -77,26 +77,34 @@ async function create(req: Request, res: Response) {
         //convert token to Account object
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
-        if(user[1][0].status != 'active')
+        if(user.status != 'active')
             return res.status(400).json('User not active.');
 
-        const sender = await account_obj.show(user[1][0].slug);
+        const sender = await account_obj.show(user.slug);
         const reciver = await account_obj.show_by_account_number(l.reciver);
+        if(!sender)
+            return res.status(400).json('login please .')
+        if(!reciver)
+            return res.status(400).json('please enter a valid reciver number.')
         const permisson = jwt.verify(token, secret);
         if (permisson) {
             l.created_at = new Date();
-            l.operation_number = get_random_number(user[1][0].id);
+            l.operation_number = get_random_number(user.id);
 
             l.sender = sender?.getDataValue('account_number');
             let sender_balance = sender?.getDataValue('balance');
             let reciver_balance = reciver?.getDataValue('balance');
-            const sender_acceppted = sender?.getDataValue('acceppted');
-
-            if(sender_balance > l.amount || !sender_acceppted){
-                return res.status(400).json('Your balance is less than amount or your account pendding.');
+            const sender_acceppted = sender?.getDataValue('accepted');
+            
+            
+            if(sender_balance < l.amount){
+                return res.status(400).json('Your balance is less than amount.');
             }
+            if(!sender_acceppted)
+                return res.status(400).json('your account pendding.');
+            
             sender_balance -= l.amount;
-            await account_obj.update(sender_balance, user[1][0].slug);
+            await account_obj.update(sender_balance, user.slug);
             await account_obj.update(reciver_balance+l.amount, reciver?.getDataValue('userSlug'));
             
             const result = await log_obj.create(l);

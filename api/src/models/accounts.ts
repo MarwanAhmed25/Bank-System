@@ -30,9 +30,9 @@ export class Account {
         }
     }
     //show one row in the account table
-    async show_by_account_number(userSlug: string) {
+    async show_by_account_number(account_number: string) {
         try {
-            return await account_model.findOne({ where: { userSlug: userSlug } });
+            return await account_model.findOne({ where: { account_number: account_number } });
         } catch (e) {
             throw new Error(`${e}`);
         }

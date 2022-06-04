@@ -72,11 +72,15 @@ async function update(req: Request, res: Response) {
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
-        if (permisson && user.slug === slug) {
+
+        const account = await account_obj.show(slug);
+        const isAccepted = account?.getDataValue('accepted');
+
+        if (permisson && isAccepted && user.slug === slug) {
             const result = await account_obj.update(balance, slug);
             return res.status(200).json(result);
         }
-        res.status(400).json('not allowed.');
+        res.status(400).json('not allowed. may be account pedding or need to login');
     } catch (e) {
         res.status(400).json(`${e}`);
     }
