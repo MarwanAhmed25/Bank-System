@@ -49,7 +49,7 @@ Authrization
         can init account
         can login
         can register
-        can make a transfare
+        can make a transfare  
 
         if status = deactive
         can't tranfare
@@ -61,4 +61,5 @@ Authrization
 discuss:
 
 - admin will show all users or pendding only
-- 
+- admin will show all accounts, user will show only approved accounts
+- sending mail when user register

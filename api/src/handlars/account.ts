@@ -20,14 +20,17 @@ async function index(req: Request, res: Response) {
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token,secret);
         if (permisson) {
-            const result = await account_obj.index();
-            //if page exist will paginate
-            const paginated_result = pagination(page, limit, result);
+            let result = await account_obj.index();
+            
             if(user.role === 'user'){
-                const filttered_data = result.filter(a => a.getDataValue('accepted')== true);
-                return res.status(200).json(filttered_data);
+                result = result.filter(a => a.getDataValue('accepted')== true);
+                //if page exist will paginate
+                const paginated_result = pagination(page, limit, result);
+                return res.status(200).json(paginated_result);
                 
             }
+            //if page exist will paginate
+            const paginated_result = pagination(page, limit, result);
             res.status(200).json(paginated_result);
 
         }

@@ -3,11 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const operations = {
     operation_number: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            isNumeric: true
-        }
+        type: sequelize_1.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     from_or_to: {
         type: sequelize_1.DataTypes.BOOLEAN,
