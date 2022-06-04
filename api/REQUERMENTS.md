@@ -46,15 +46,15 @@
             headers --> token for admin, users
             body --> nothing
 
-        show-> [get] --> '/users/:slug/account' 
+        show-> [get] --> '/users/accounts/:slug' 
             headers --> token for admin, users
             body --> nothing
 
-        update-> [post] --> '/users/:slug/account'
+        update-> [patch] --> '/users/accounts/:slug'
             headers --> token for user
             body --> balance-> number
 
-        approve-> [post] --> '/users/:slug/approve_account'
+        approve-> [post] --> '/users/accounts/:slug/approve_account'
             headers --> token for admin
             body --> accepted ->boolean
     
@@ -71,3 +71,4 @@
             headers --> token for user
             body --> amount-> number, reciver-> account_number, 
             
+* prevent user from recharge the account before accepted

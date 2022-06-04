@@ -18,23 +18,23 @@ async function index(req: Request, res: Response) {
         //convert token to Account object
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
-        const permisson = jwt.verify(token,secret);
+        const permisson = jwt.verify(token, secret);
         if (permisson) {
             let result = await account_obj.index();
-            
-            if(user.role === 'user'){
-                result = result.filter(a => a.getDataValue('accepted')== true);
+
+            if (user.role === 'user') {
+                result = result.filter(a => a.getDataValue('accepted') == true);
                 //if page exist will paginate
                 const paginated_result = pagination(page, limit, result);
                 return res.status(200).json(paginated_result);
-                
+
             }
             //if page exist will paginate
             const paginated_result = pagination(page, limit, result);
-            res.status(200).json(paginated_result);
+            return res.status(200).json(paginated_result);
 
         }
-
+        res.status(400).json('not allowed.');
     } catch (e) {
         res.status(400).json(`${e}`);
     }
@@ -72,10 +72,11 @@ async function update(req: Request, res: Response) {
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
-        if (permisson && user.slug === slug){
-        const result = await account_obj.update(balance,slug);
-        res.status(200).json(result);
-    }
+        if (permisson && user.slug === slug) {
+            const result = await account_obj.update(balance, slug);
+            return res.status(200).json(result);
+        }
+        res.status(400).json('not allowed.');
     } catch (e) {
         res.status(400).json(`${e}`);
     }
@@ -85,16 +86,21 @@ async function update(req: Request, res: Response) {
 async function approve(req: Request, res: Response) {
     const token = req.headers.token as unknown as string;
     const slug = req.params.slug;
-    const accepted = req.body.balance;
+    const accepted = req.body.accepted;
+
+
     try {
         //convert token to Account object
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
-        if (permisson && user.role === 'admin'){
-        const result = await account_obj.update(accepted,slug);
-        res.status(200).json(result);
+        if (permisson && user.role === 'admin') {
+            const result = await account_obj.approve(accepted, slug);
+
+
+            return res.status(200).json(result);
         }
+        res.status(400).json('not allowed.');
     } catch (e) {
         res.status(400).json(`${e}`);
     }
@@ -104,10 +110,10 @@ async function approve(req: Request, res: Response) {
 function mainRoutes(app: Application) {
 
     app.get('/users/accounts', index);
-    app.get('/users/:slug/account', show);
-    app.post('/users/:slug/account', update);
-    app.post('/users/:slug/approve_account', approve);
-   
+    app.get('/users/accounts/:slug', show);
+    app.patch('/users/accounts/:slug', update);
+    app.post('/users/accounts/:slug/approve_account', approve);
+
 }
 
 export default mainRoutes;

@@ -114,10 +114,11 @@ async function delete_(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
-        if (perrmission && user.slug === slug) {
+        if (perrmission && user[1][0].slug === slug) {
             const result = await user_obj.delete(slug);
-            res.status(200).json(result);
+            return res.status(200).json(result);
         }
+        return res.status(400).json('not allowed.');
     }
     catch (e) {
         res.status(400).json(`${e}`);
