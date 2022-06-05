@@ -20,9 +20,9 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
-            <Route path="/" element={<HomeScreen />} exact></Route>
-            <Route path="/login" element={<LoginScreen />}></Route>
-            <Route path="/register" element={<RegisterScreen />}></Route>
+            <Route path="/" element={<HomeScreen />} exact />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
 
             {/* Will be Protected Route */}
             <Route path="/adminPanel" element={<AdminDashScreen />} />
