@@ -15,7 +15,7 @@ const App = () => {
       <Header />
 
       {/* when Admin sign in will be redirected to Admin dashboard */}
-      <AdminDashScreen />
+      {/* <AdminDashScreen /> */}
 
       <main className="py-3">
         <Container>
