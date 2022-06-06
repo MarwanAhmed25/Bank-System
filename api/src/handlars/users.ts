@@ -123,7 +123,7 @@ async function delete_(req: Request, res: Response) {
         const perrmission = jwt.verify(token, secret);
         
         
-        if (perrmission && user[1][0].slug === slug) {
+        if (perrmission && user.slug === slug) {
             const result = await user_obj.delete(slug);
 
             return res.status(200).json(result);
