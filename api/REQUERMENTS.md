@@ -2,7 +2,7 @@
         
     Users:
 
-        index  --> /users?page=&limit= 
+        index  --> /users
 
                 any of the query will return data put page to paginate limit by defualt = 20 if you want to cjange that provid it.
                                             [get] no content in body
