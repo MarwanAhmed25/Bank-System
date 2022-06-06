@@ -28,11 +28,11 @@ const LoginScreen = () => {
       toast.error(message);
     }
 
-    if (isSuccess && user?.role === "user") {
+    if (isSuccess && user.user.role === "user") {
       navigate("/");
     }
 
-    if (isSuccess && user?.role === "admin") {
+    if (isSuccess && user.user.role === "admin") {
       navigate("/admin");
     }
 

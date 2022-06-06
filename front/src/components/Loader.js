@@ -1,38 +1,21 @@
-import axios from "axios";
+import React from "react";
+import { Spinner } from "react-bootstrap";
 
-const API_URL = "/api/";
-
-// Register user
-const register = async (userData) => {
-  const response = await axios.post(API_URL + "users", userData);
-
-  if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
-
-  return response.data;
+const Loader = () => {
+  return (
+    <Spinner
+      animation="border"
+      role="status"
+      style={{
+        width: "100px",
+        height: "100px",
+        margin: "auto",
+        display: "block",
+      }}
+    >
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  );
 };
 
-// Login user
-const login = async (userData) => {
-  const response = await axios.post(API_URL + "login", userData);
-
-  if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
-
-  return response.data;
-};
-
-// Logout user
-const logout = () => {
-  localStorage.removeItem("user");
-};
-
-const authService = {
-  register,
-  logout,
-  login,
-};
-
-export default authService;
+export default Loader;
