@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --config .prettierrc src/**/*.ts --write",
-    "lint": "eslint . --ext .ts  --fix",
+    "lint": "npm run prettier && eslint . --ext .ts  --fix",
     "build": "npx tsc",
     "env-variable": "export NODE_TLS_REJECT_UNAUTHORIZED='0'",
     "up": "dev=test db-migrate up",
     "down": "dev=test db-migrate down",
     "test": "dev=test npm run up up && npm run build && jasmine && npm run down",
-    "start": "node build/index.js",
+    "start": "rm -rf node_modules && npm install && node build/src/index.js",
     "dev": "npm run prettier && npm run lint && npm run test && npm run start",
     "dev-server": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./build/src/index.js\""
   },

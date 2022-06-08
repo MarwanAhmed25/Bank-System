@@ -1,20 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const sequelize_1 = require("sequelize");
-const logs = {
+var sequelize_1 = require("sequelize");
+var logs = {
     operation_number: {
         type: sequelize_1.DataTypes.STRING,
         primaryKey: true,
         allowNull: false,
         validate: {
             isNumeric: true,
-        }
+        },
     },
     sender: {
+        // 0 means send to another account, 1 means charge to my account
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
     reciver: {
+        // 0 means send to another account, 1 means charge to my account
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
@@ -22,12 +24,15 @@ const logs = {
         type: sequelize_1.DataTypes.FLOAT,
         allowNull: false,
         validate: {
-            min: 1
-        }
+            isValdate: function (v) {
+                if (v < 1)
+                    throw new Error('Amount must be more than 0.');
+            }
+        },
     },
     created_at: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,
-    }
+    },
 };
 exports.default = logs;
