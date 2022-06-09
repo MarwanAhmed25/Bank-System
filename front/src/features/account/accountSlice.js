@@ -15,10 +15,10 @@ const initialState = {
 // Approve Account
 export const approveAccount = createAsyncThunk(
   "accounts/approve",
-  async ({ slug, boolean }, thunkAPI) => {
+  async ({ slug, accepted }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().user.user.token;
-      return await accountService.accountApproval(slug, boolean, token);
+      return await accountService.accountApproval(slug, accepted, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -34,9 +34,10 @@ export const approveAccount = createAsyncThunk(
 // Get user account
 export const getAccount = createAsyncThunk(
   "accounts/getAccount",
-  async (slug, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().user.user.token;
+      const slug = thunkAPI.getState().user.user.user.slug;
       return await accountService.userAccount(slug, token);
     } catch (error) {
       const message =
@@ -52,10 +53,12 @@ export const getAccount = createAsyncThunk(
 
 export const updateAccount = createAsyncThunk(
   "accounts/update",
-  async ({ slug, number }, thunkAPI) => {
+  async (amount, thunkAPI) => {
     try {
       const token = thunkAPI.getState().user.user.token;
-      return await accountService.updateUserAccount(slug, number, token);
+      const slug = thunkAPI.getState().user.user.user.slug;
+
+      return await accountService.updateUserAccount(slug, amount, token);
     } catch (error) {
       const message =
         (error.response &&
