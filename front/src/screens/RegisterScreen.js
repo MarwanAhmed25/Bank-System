@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FaUser } from "react-icons/fa";
-import { register, reset } from "../features/auth/authSlice";
+import { register, reset } from "../features/user/userSlice";
 import Loader from "../components/Loader";
 
 function RegisterScreen() {
@@ -24,7 +25,7 @@ function RegisterScreen() {
   const dispatch = useDispatch();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
+    (state) => state.user
   );
 
   useEffect(() => {
@@ -57,6 +58,7 @@ function RegisterScreen() {
         email,
         password,
         phone,
+        role: "user",
       };
 
       dispatch(register(userData));
@@ -134,6 +136,7 @@ function RegisterScreen() {
           </Button>
         </div>
       </Form>
+      <ToastContainer />
     </FormContainer>
   );
 }

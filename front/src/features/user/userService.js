@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/";
+const API_URL = "https://ebank-system.herokuapp.com/";
 
 // Register user
 const register = async (userData) => {
@@ -29,10 +29,10 @@ const logout = () => {
   localStorage.removeItem("user");
 };
 
-const authService = {
+const userService = {
   register,
   logout,
   login,
 };
 
-export default authService;
+export default userService;

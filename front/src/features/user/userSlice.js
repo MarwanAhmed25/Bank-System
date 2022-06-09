@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./authService";
+import userService from "./userService";
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"));
@@ -14,41 +14,46 @@ const initialState = {
 
 // Register user
 export const register = createAsyncThunk(
-  "auth/register",
+  "user/register",
   async (user, thunkAPI) => {
     try {
-      return await authService.register(user);
+      return await userService.register(user);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data) ||
+        error.response.data.message ||
         error.message ||
         error.toString();
+      // console.log(error.response.status);
+      // console.log(error.message);
+      // console.log(error.response.headers); // 👉️ {... response headers here}
+      // console.log(error.response.data);
+
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 // Login user
-export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
+export const login = createAsyncThunk("user/login", async (user, thunkAPI) => {
   try {
-    return await authService.login(user);
+    return await userService.login(user);
   } catch (error) {
     const message =
-      (error.response && error.response.data && error.response.data.message) ||
+      (error.response && error.response.data) ||
+      error.response.data.message ||
       error.message ||
       error.toString();
     return thunkAPI.rejectWithValue(message);
   }
 });
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-  await authService.logout();
+export const logout = createAsyncThunk("user/logout", async () => {
+  await userService.logout();
 });
 
-export const authSlice = createSlice({
-  name: "auth",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
     reset: (state) => {
@@ -94,5 +99,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+export const { reset } = userSlice.actions;
+export default userSlice.reducer;
