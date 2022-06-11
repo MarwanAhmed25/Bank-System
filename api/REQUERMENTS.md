@@ -67,7 +67,7 @@
             headers --> token for user
             body --> nothing
 
-        create-> [post] --> '/users/:slug/account'
+        create-> [post] --> '/logs'
             headers --> token for user
             body --> amount-> number, reciver-> account_number, 
             
