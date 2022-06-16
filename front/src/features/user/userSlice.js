@@ -2,59 +2,23 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
 
 // Get user from localStorage
-const user = JSON.parse(localStorage.getItem("user"));
+const users = JSON.parse(localStorage.getItem("users"));
 
 const initialState = {
-  user: user ? user : null,
+  users: users ? users : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
-// Register user
-export const register = createAsyncThunk(
-  "user/register",
-  async (user, thunkAPI) => {
-    try {
-      return await userService.register(user);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data) ||
-        error.response.data.message ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-// Login user
-export const login = createAsyncThunk("user/login", async (user, thunkAPI) => {
-  try {
-    return await userService.login(user);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data) ||
-      error.response.data.message ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
-
-export const logout = createAsyncThunk("user/logout", async () => {
-  await userService.logout();
-});
-
 // get single user
 export const getUser = createAsyncThunk(
-  "accounts/getUser",
+  "users/getUser",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().user.user.token;
-      const slug = thunkAPI.getState().user.user.user.slug;
+      const token = thunkAPI.getState().auth.user.token;
+      const slug = thunkAPI.getState().auth.user.user.slug;
 
       return await userService.getUser(slug, token);
     } catch (error) {
@@ -71,12 +35,11 @@ export const getUser = createAsyncThunk(
 
 //Update User
 export const updateUser = createAsyncThunk(
-  "user/update",
+  "users/update",
   async (userData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().user.user.token;
-      const slug = thunkAPI.getState().user.user.user.slug;
-      console.log(slug);
+      const token = thunkAPI.getState().auth.user.token;
+      const slug = thunkAPI.getState().auth.user.user.slug;
 
       return await userService.updateUser(userData, slug, token);
     } catch (error) {
@@ -94,10 +57,12 @@ export const updateUser = createAsyncThunk(
 
 // Get ALL USERS
 export const getUsers = createAsyncThunk(
-  "accounts/getAll",
+  "users/getAll",
+
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().user.user.token;
+      const token = thunkAPI.getState().auth.user.token;
+
       return await userService.getUsers(token);
     } catch (error) {
       const message =
@@ -112,12 +77,11 @@ export const getUsers = createAsyncThunk(
   }
 );
 export const deleteUser = createAsyncThunk(
-  "user/delete",
+  "users/delete",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().user.user.token;
-      const slug = thunkAPI.getState().user.user.user.slug;
-      console.log(slug);
+      const token = thunkAPI.getState().auth.user.token;
+      const slug = thunkAPI.getState().auth.user.user.slug;
 
       return await userService.deleteUser(slug, token);
     } catch (error) {
@@ -133,11 +97,12 @@ export const deleteUser = createAsyncThunk(
   }
 );
 export const approveUser = createAsyncThunk(
-  "accounts/approve",
-  async ({ slug, accepted }, thunkAPI) => {
+  "users/approve",
+  async ({ slug, accepted, status }, thunkAPI) => {
+    // async (userStatus, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().user.user.token;
-      return await userService.approveUser(slug, accepted, token);
+      const token = thunkAPI.getState().auth.user.token;
+      return await userService.approveUser(slug, { accepted, status }, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -151,7 +116,7 @@ export const approveUser = createAsyncThunk(
 );
 
 export const userSlice = createSlice({
-  name: "user",
+  name: "users",
   initialState,
   reducers: {
     reset: (state) => {
@@ -161,50 +126,16 @@ export const userSlice = createSlice({
       state.message = "";
     },
   },
-
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = action.payload;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-      })
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null;
-      })
-      .addCase(getUsers.pending, (state) => {
-        state.isLoading = true;
-      })
+
       .addCase(getUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.tickets = action.payload;
+        state.users = action.payload;
       })
       .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -224,10 +155,13 @@ export const userSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      .addCase(getUsers.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.isLoading = false;
@@ -244,7 +178,7 @@ export const userSlice = createSlice({
       .addCase(approveUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.accounts = action.payload; //not sure
+        state.message = action.payload; //not sure
       })
       .addCase(approveUser.rejected, (state, action) => {
         state.isLoading = false;

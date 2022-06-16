@@ -1,10 +1,7 @@
 import axios from "axios";
 
 const API_URL = "https://ebank-system.herokuapp.com/";
-
-// const user = JSON.parse(localStorage.getItem("user"));
-// console.log(user);
-// console.log(user.user.role);
+// const API_URL = "http://localhost:5000/";
 
 const accountApproval = async (slug, status, token) => {
   const config = {
@@ -21,7 +18,6 @@ const accountApproval = async (slug, status, token) => {
   if (response.data) {
     localStorage.setItem("accounts", JSON.stringify(response.data));
   }
-  console.log(response.data);
 
   return response.data;
 };
@@ -34,11 +30,6 @@ const userAccount = async (slug, token) => {
     },
   };
   const response = await axios.get(`${API_URL}users/accounts/${slug}`, config);
-
-  //   if (response.data) {
-  //     localStorage.setItem("user", JSON.stringify(response.data));
-  //   }
-  console.log(response.data);
 
   return response.data;
 };
@@ -54,7 +45,6 @@ const updateUserAccount = async (slug, number, token) => {
     { balance: number },
     config
   );
-  console.log(response.data);
 
   if (response.data) {
     localStorage.setItem("accounts", JSON.stringify(response.data));
@@ -69,7 +59,6 @@ const accountsList = async (token) => {
     },
   };
   const response = await axios.get(API_URL + "users/accounts", config);
-  console.log(response.data);
 
   return response.data;
 };
