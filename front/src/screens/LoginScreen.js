@@ -5,8 +5,9 @@ import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { login, reset } from "../features/user/userSlice";
+
 import Loader from "../components/Loader";
+import { login, reset } from "../features/auth/authSlice";
 
 const LoginScreen = () => {
   const [formData, setFormData] = useState({
@@ -19,8 +20,8 @@ const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.user
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
   );
 
   useEffect(() => {
@@ -29,11 +30,12 @@ const LoginScreen = () => {
     }
 
     if (isSuccess && user.user?.role === "user") {
-      navigate("/");
+      if (user.user.accepted) navigate("/");
+      else navigate("/pendingreg");
     }
 
     if (isSuccess && user.user?.role === "admin") {
-      navigate("/adminPanel");
+      navigate("/admin/userlist");
     }
 
     dispatch(reset());
