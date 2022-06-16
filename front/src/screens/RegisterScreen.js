@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaUser } from "react-icons/fa";
 import { register, reset } from "../features/auth/authSlice";
 import Loader from "../components/Loader";
+import { logout } from "../features/auth/authSlice";
 
 function RegisterScreen() {
   const [formData, setFormData] = useState({
@@ -35,6 +36,7 @@ function RegisterScreen() {
 
     if (isSuccess || user) {
       navigate("/pendingreg");
+      dispatch(logout());
     }
 
     dispatch(reset());
