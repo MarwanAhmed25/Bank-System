@@ -4,12 +4,11 @@ This project is a banking system application where the user can register and whe
 
 ## Project Setup
 
-\*clone the Project
-\*cd front
-change the project directory to front folder
-\*npm install
+- clone the Project
+- cd front
+- install the dependencies - `npm install`
+- start the development server with `npm start`
 
-\*npm start
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
@@ -21,11 +20,9 @@ You may also see any lint errors in the console.
 sara@example.com (User)
 Pass@1234
 
-omar@example.com (User)
+Omar@example.com (User)
 Pass@1234
-
-This frontend of this projec was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## License
 
-Banking System app is licensed as MIT
+The MIT License
