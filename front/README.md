@@ -9,13 +9,8 @@ This project is a banking system application where the user can register and whe
 - install the dependencies - `npm install`
 - start the development server with `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-## Sample User Logins
+```
+Sample User Logins
 
 sara@example.com (User)
 Pass@1234
@@ -23,6 +18,12 @@ Pass@1234
 Omar@example.com (User)
 Pass@1234
 
+```
+
 ## License
 
 The MIT License
+
+```
+
+```
