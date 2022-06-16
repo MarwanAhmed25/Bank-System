@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaUser } from "react-icons/fa";
-import { register, reset } from "../features/user/userSlice";
+import { register, reset } from "../features/auth/authSlice";
 import Loader from "../components/Loader";
 
 function RegisterScreen() {
@@ -25,7 +25,7 @@ function RegisterScreen() {
   const dispatch = useDispatch();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.user
+    (state) => state.auth
   );
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function RegisterScreen() {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/pendingreg");
     }
 
     dispatch(reset());
@@ -84,6 +84,7 @@ function RegisterScreen() {
             value={name}
             placeholder="Enter your name"
             onChange={onChange}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="email">
@@ -95,6 +96,7 @@ function RegisterScreen() {
             value={email}
             placeholder="Enter your email"
             onChange={onChange}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="password">
@@ -106,6 +108,7 @@ function RegisterScreen() {
             value={password}
             placeholder="Enter password"
             onChange={onChange}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="confirmPassword">
@@ -128,6 +131,7 @@ function RegisterScreen() {
             value={phone}
             placeholder="Enter your Phone Number"
             onChange={onChange}
+            required
           ></Form.Control>
         </Form.Group>
         <div className="d-grid gap-2 py-3">
