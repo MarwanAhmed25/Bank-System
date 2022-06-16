@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 import { getAccount, reset } from "../features/account/accountSlice";
 import { createLog } from "../features/logs/logSlice";
@@ -34,7 +35,8 @@ const TransferScreen = () => {
   const submitTransfer = (e) => {
     e.preventDefault();
     dispatch(reset);
-
+    if (moneyTransfer > accounts.balance)
+      return toast.error("Account does not have sufficient balance!");
     dispatch(
       createLog({ amount: +moneyTransfer, reciver: receiverAccountNum })
     );
@@ -146,6 +148,7 @@ const TransferScreen = () => {
             </Col>
           </Row>
         </div>
+        <ToastContainer />
       </Container>
     </>
   );
