@@ -16,6 +16,7 @@ const HomeScreen = () => {
 
   return (
     <div>
+      <h3>Welcom to Modern Bank</h3>
       {user && (accounts === null || accounts.accepted === false) ? (
         <NewUserScreen />
       ) : accounts.accepted ? (

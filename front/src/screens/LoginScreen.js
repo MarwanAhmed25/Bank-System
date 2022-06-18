@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import Loader from "../components/Loader";
 import { login, reset } from "../features/auth/authSlice";
@@ -101,6 +101,7 @@ const LoginScreen = () => {
           </Button>
         </div>
       </Form>
+      <ToastContainer />
     </FormContainer>
   );
 };

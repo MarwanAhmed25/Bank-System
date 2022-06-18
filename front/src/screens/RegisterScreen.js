@@ -70,6 +70,9 @@ function RegisterScreen() {
   if (isLoading) {
     return <Loader />;
   }
+  if (isError) {
+    toast.error(message);
+  }
 
   return (
     <FormContainer>
