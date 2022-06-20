@@ -1,3 +1,7 @@
+## Demo
+
+https://front-sprints-project.vercel.app/
+
 ## Banking Systm Application
 
 This project is a banking system application where the user can register and when the admin approves his registeration the user can login and create a new account. After the new account admin approval. The user can use his account to recharge or withdraw money from his account balance. Moreover The user can transfer money to another account and see all his transactions. The admin can activate , deactivate and suspend the user.

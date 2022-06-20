@@ -9,12 +9,12 @@
     "start-back": "npm run install-front && cd front && npm start",
     "start-front": "npm run install-back && cd api && npm run dev-server",
     "start": "npm run start-back && npm run start-front",
-    
+    "dev-server": "tsc-watch --noClear -p ./api/tsconfig.json --onSuccess \"node ./api/build/src/index.js\"",
+    "client": "npm start --prefix front",
+    "dev": "concurrently \"npm run dev-server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    },
-  "dependencies": {
-    }
+  "devDependencies": {},
+  "dependencies": {}
 }
