@@ -20,10 +20,10 @@ const PendingAccountScreen = () => {
                 variant="success"
                 className="extraButton"
                 onClick={() => {
-                  navigate("/login");
+                  navigate("/");
                 }}
               >
-                Back to login page
+                Back to Home Page
               </Button>
             </Card.Body>
           </Card>

@@ -5,6 +5,7 @@ import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { logout } from "../features/auth/authSlice";
 
 import Loader from "../components/Loader";
 import { login, reset } from "../features/auth/authSlice";
@@ -30,8 +31,11 @@ const LoginScreen = () => {
     }
 
     if (isSuccess && user.user?.role === "user") {
-      if (user.user.accepted) navigate("/");
-      else navigate("/pendingreg");
+      if (user.user.accepted) navigate("/userScreen");
+      else {
+        navigate("/pendingreg");
+        dispatch(logout());
+      }
     }
 
     if (isSuccess && user.user?.role === "admin") {

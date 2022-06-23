@@ -5,6 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout, reset } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import { reset as accountReset } from "../features/account/accountSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Header = () => {
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
+    dispatch(accountReset());
     navigate("/login");
   };
 
@@ -29,7 +31,7 @@ const Header = () => {
             <Nav className="ms-auto">
               {user && user.user?.role === "user" ? (
                 <NavDropdown title={user.user.name} id="username">
-                  <LinkContainer to="/user">
+                  <LinkContainer to="/userscreen">
                     <NavDropdown.Item>User Dashboard</NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Item onClick={onLogout}>Logout</NavDropdown.Item>

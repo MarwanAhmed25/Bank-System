@@ -12,5 +12,20 @@ code {
     monospace;
 }
 main {
-  min-height: 80vh;
+  min-height: 70vh;
+}
+.bank-img {
+  height: 400px;
+  background-size: contain;
+  position: relative;
+  left: 25%;
+  right: 5%;
+  background-position: center;
+}
+
+.title {
+  height: 30%;
+  text-align: center;
+  z-index: 3;
+  background-size: 100% 40%;
 }

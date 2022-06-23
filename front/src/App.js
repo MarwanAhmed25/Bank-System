@@ -20,6 +20,7 @@ import UserListScreen from "./screens/UserListScreen";
 import AccountApproval from "./screens/AccountApproval";
 import NewRegisterRequest from "./screens/NewRegisterRequest";
 import PendingRegisterScreen from "./screens/pendingRegisterScreen";
+import UserScreen from "./screens/UserScreen";
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
 
             <Route path="/admin/newrequest" element={<NewRegisterRequest />} />
             <Route path="/pendingreg" element={<PendingRegisterScreen />} />
+            <Route path="/userscreen" element={<UserScreen />} />
           </Routes>
         </Container>
       </main>
