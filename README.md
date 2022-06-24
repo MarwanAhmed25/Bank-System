@@ -24,6 +24,9 @@ Pass@1234
 Omar@example.com (User)
 Pass@1234
 
+admin@example.com (admin)
+Pass@1234
+
 ```
 
 ## License
